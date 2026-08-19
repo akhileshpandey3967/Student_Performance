@@ -1,6 +1,9 @@
+fastapi
+uvicorn
 pandas
 numpy
-matplotlib
-seaborn
 scikit-learn
-ipykernel
+joblib
+jinja2
+xgboost
+catboost

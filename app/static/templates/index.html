@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Student Performance Predictor
+    </title>
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(99, 102, 241, 0.35),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(168, 85, 247, 0.3),
+                    transparent 30%
+                ),
+
+                #080b18;
+
+            color: #ffffff;
+
+            padding: 40px 20px;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .app {
+
+            width: 100%;
+
+            max-width: 1100px;
+
+            margin: auto;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .logo {
+
+            width: 64px;
+
+            height: 64px;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            font-size: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #a855f7
+                );
+
+            box-shadow:
+                0 15px 40px
+                rgba(99, 102, 241, 0.35);
+
+        }
+
+
+        .header h1 {
+
+            font-size: clamp(
+                30px,
+                5vw,
+                48px
+            );
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .header h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #818cf8,
+                    #c084fc
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+        .header p {
+
+            color: #9ca3af;
+
+            font-size: 16px;
+
+        }
+
+
+        /* =====================================================
+           MAIN GRID
+           ===================================================== */
+
+        .dashboard {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.35fr)
+                minmax(300px, 0.65fr);
+
+            gap: 24px;
+
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .card {
+
+            background:
+                rgba(17, 24, 39, 0.78);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            border-radius: 24px;
+
+            padding: 28px;
+
+            backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0, 0, 0, 0.25);
+
+        }
+
+
+        .card-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .card-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                rgba(99, 102, 241, 0.15);
+
+            font-size: 20px;
+
+        }
+
+
+        .card-header h2 {
+
+            font-size: 19px;
+
+        }
+
+
+        .card-header p {
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-top: 3px;
+
+        }
+
+
+        /* =====================================================
+           FORM GRID
+           ===================================================== */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .full {
+
+            grid-column:
+                1 / -1;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            color: #d1d5db;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        /* =====================================================
+           SELECT
+           ===================================================== */
+
+        select {
+
+            width: 100%;
+
+            height: 48px;
+
+            padding:
+                0 14px;
+
+            color: #f9fafb;
+
+            background:
+                #111827;
+
+            border:
+                1px solid
+                #374151;
+
+            border-radius: 12px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        select:focus {
+
+            border-color:
+                #818cf8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(129, 140, 248, 0.12);
+
+        }
+
+
+        select option {
+
+            background: #111827;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           SCORE SLIDER
+           ===================================================== */
+
+        .score-top {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .score-number {
+
+            min-width: 45px;
+
+            text-align: center;
+
+            padding: 5px 9px;
+
+            border-radius: 8px;
+
+            color: #c4b5fd;
+
+            background:
+                rgba(139, 92, 246, 0.12);
+
+            font-weight: 700;
+
+        }
+
+
+        input[type="range"] {
+
+            width: 100%;
+
+            height: 6px;
+
+            appearance: none;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6366f1,
+                    #a855f7
+                );
+
+        }
+
+
+        input[type="range"]::-webkit-slider-thumb {
+
+            appearance: none;
+
+            width: 20px;
+
+            height: 20px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            border:
+                4px solid #818cf8;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 15px
+                rgba(129, 140, 248, 0.5);
+
+        }
+
+
+        .range-labels {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            margin-top: 7px;
+
+            color: #6b7280;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           BUTTONS
+           ===================================================== */
+
+        .buttons {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+        }
+
+
+        button {
+
+            height: 50px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s,
+                opacity 0.2s;
+
+        }
+
+
+        .predict-btn {
+
+            flex: 1;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
+            box-shadow:
+                0 10px 25px
+                rgba(99, 102, 241, 0.3);
+
+        }
+
+
+        .predict-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(99, 102, 241, 0.4);
+
+        }
+
+
+        .reset-btn {
+
+            width: 110px;
+
+            color: #d1d5db;
+
+            background:
+                #1f2937;
+
+            border:
+                1px solid #374151;
+
+        }
+
+
+        .reset-btn:hover {
+
+            background:
+                #374151;
+
+        }
+
+
+        button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        /* =====================================================
+           RESULT CARD
+           ===================================================== */
+
+        .result-card {
+
+            min-height: 100%;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .result-content {
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+        }
+
+
+        .result-placeholder {
+
+            color: #6b7280;
+
+        }
+
+
+        .placeholder-icon {
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            font-size: 38px;
+
+            background:
+                rgba(99, 102, 241, 0.08);
+
+            border:
+                1px solid
+                rgba(99, 102, 241, 0.15);
+
+        }
+
+
+        .placeholder-title {
+
+            color: #d1d5db;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .placeholder-text {
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           SCORE CIRCLE
+           ===================================================== */
+
+        .score-circle {
+
+            width: 190px;
+
+            height: 190px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            margin-bottom: 25px;
+
+            background:
+                conic-gradient(
+                    #818cf8 0deg,
+                    #a855f7 0deg,
+                    #1f2937 0deg
+                );
+
+            transition:
+                background 1s ease;
+
+        }
+
+
+        .score-circle::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 12px;
+
+            border-radius: 50%;
+
+            background:
+                #111827;
+
+        }
+
+
+        .score-inner {
+
+            position: relative;
+
+            z-index: 1;
+
+        }
+
+
+        .score-value {
+
+            font-size: 48px;
+
+            font-weight: 800;
+
+            letter-spacing: -2px;
+
+        }
+
+
+        .score-outof {
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+        }
+
+
+        .prediction-label {
+
+            color: #9ca3af;
+
+            font-size: 13px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .performance {
+
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 20px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(99, 102, 241, 0.08);
+
+            border:
+                1px solid
+                rgba(99, 102, 241, 0.12);
+
+        }
+
+
+        .performance strong {
+
+            display: block;
+
+            color: #c4b5fd;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .performance span {
+
+            color: #9ca3af;
+
+            font-size: 12px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .footer {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #4b5563;
+
+            font-size: 12px;
+
+        }
+
+
+        /* =====================================================
+           LOADING
+           ===================================================== */
+
+        .loading {
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            color: #a5b4fc;
+
+            font-size: 13px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #818cf8;
+
+            animation:
+                bounce 0.8s infinite alternate;
+
+        }
+
+
+        .dot:nth-child(2) {
+
+            animation-delay:
+                0.2s;
+
+        }
+
+
+        .dot:nth-child(3) {
+
+            animation-delay:
+                0.4s;
+
+        }
+
+
+        @keyframes bounce {
+
+            from {
+                transform:
+                    translateY(0);
+            }
+
+            to {
+                transform:
+                    translateY(-6px);
+            }
+
+        }
+
+
+        /* =====================================================
+           ERROR
+           ===================================================== */
+
+        .error {
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            color: #fca5a5;
+
+            background:
+                rgba(239, 68, 68, 0.08);
+
+            border:
+                1px solid
+                rgba(239, 68, 68, 0.15);
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .dashboard {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .result-card {
+
+                min-height: 450px;
+
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            body {
+
+                padding: 25px 12px;
+
+            }
+
+            .card {
+
+                padding: 20px;
+
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .full {
+
+                grid-column: auto;
+
+            }
+
+            .buttons {
+
+                flex-direction: column;
+
+            }
+
+            .reset-btn {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="header">
+
+        <div class="logo">
+            🎓
+        </div>
+
+        <h1>
+            Student <span>Performance</span>
+        </h1>
+
+        <p>
+            Predict mathematics performance using machine learning
+        </p>
+
+    </header>
+
+
+    <!-- =====================================================
+         DASHBOARD
+         ===================================================== -->
+
+    <main class="dashboard">
+
+
+        <!-- =================================================
+             INPUT CARD
+             ================================================= -->
+
+        <section class="card">
+
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <h2>
+                        Student Information
+                    </h2>
+
+                    <p>
+                        Enter the student's academic details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="predictionForm">
+
+
+                <div class="form-grid">
+
+
+                    <!-- Gender -->
+
+                    <div class="form-group">
+
+                        <label for="gender">
+                            Gender
+                        </label>
+
+                        <select
+                            id="gender"
+                            required
+                        >
+
+                            <option value="female">
+                                Female
+                            </option>
+
+                            <option value="male">
+                                Male
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Race -->
+
+                    <div class="form-group">
+
+                        <label for="race_ethnicity">
+                            Race / Ethnicity
+                        </label>
+
+                        <select
+                            id="race_ethnicity"
+                            required
+                        >
+
+                            <option value="group A">
+                                Group A
+                            </option>
+
+                            <option value="group B">
+                                Group B
+                            </option>
+
+                            <option value="group C" selected>
+                                Group C
+                            </option>
+
+                            <option value="group D">
+                                Group D
+                            </option>
+
+                            <option value="group E">
+                                Group E
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Parent Education -->
+
+                    <div class="form-group full">
+
+                        <label for="parental_level_of_education">
+                            Parent's Education
+                        </label>
+
+                        <select
+                            id="parental_level_of_education"
+                            required
+                        >
+
+                            <option value="some high school">
+                                Some High School
+                            </option>
+
+                            <option value="high school">
+                                High School
+                            </option>
+
+                            <option value="some college">
+                                Some College
+                            </option>
+
+                            <option value="associate's degree">
+                                Associate's Degree
+                            </option>
+
+                            <option value="bachelor's degree" selected>
+                                Bachelor's Degree
+                            </option>
+
+                            <option value="master's degree">
+                                Master's Degree
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Lunch -->
+
+                    <div class="form-group">
+
+                        <label for="lunch">
+                            Lunch Program
+                        </label>
+
+                        <select
+                            id="lunch"
+                            required
+                        >
+
+                            <option value="standard">
+                                Standard
+                            </option>
+
+                            <option value="free/reduced">
+                                Free / Reduced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Test Preparation -->
+
+                    <div class="form-group">
+
+                        <label for="test_preparation_course">
+                            Test Preparation
+                        </label>
+
+                        <select
+                            id="test_preparation_course"
+                            required
+                        >
+
+                            <option value="none">
+                                None
+                            </option>
+
+                            <option value="completed">
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Reading Score -->
+
+                    <div class="form-group full">
+
+                        <div class="score-top">
+
+                            <label for="reading_score">
+                                📖 Reading Score
+                            </label>
+
+                            <span
+                                class="score-number"
+                                id="readingValue"
+                            >
+                                70
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="range"
+                            id="reading_score"
+                            min="0"
+                            max="100"
+                            value="70"
+                        >
+
+                        <div class="range-labels">
+
+                            <span>
+                                0
+                            </span>
+
+                            <span>
+                                100
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Writing Score -->
+
+                    <div class="form-group full">
+
+                        <div class="score-top">
+
+                            <label for="writing_score">
+                                ✍️ Writing Score
+                            </label>
+
+                            <span
+                                class="score-number"
+                                id="writingValue"
+                            >
+                                70
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="range"
+                            id="writing_score"
+                            min="0"
+                            max="100"
+                            value="70"
+                        >
+
+                        <div class="range-labels">
+
+                            <span>
+                                0
+                            </span>
+
+                            <span>
+                                100
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- Buttons -->
+
+                <div class="buttons">
+
+                    <button
+                        type="submit"
+                        class="predict-btn"
+                        id="predictBtn"
+                    >
+
+                        🚀 Predict Math Score
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="reset-btn"
+                        id="resetBtn"
+                    >
+
+                        Reset
+
+                    </button>
+
+                </div>
+
+
+                <!-- Loading -->
+
+                <div
+                    class="loading"
+                    id="loading"
+                >
+
+                    <span class="dot"></span>
+
+                    <span class="dot"></span>
+
+                    <span class="dot"></span>
+
+                    <span>
+                        Analyzing student performance...
+                    </span>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             RESULT CARD
+             ================================================= -->
+
+        <section class="card result-card">
+
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <h2>
+                        Prediction Result
+                    </h2>
+
+                    <p>
+                        Machine learning prediction
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="result-content"
+                id="resultContent"
+            >
+
+
+                <!-- Initial state -->
+
+                <div
+                    class="result-placeholder"
+                    id="placeholder"
+                >
+
+                    <div class="placeholder-icon">
+                        🎯
+                    </div>
+
+                    <div class="placeholder-title">
+                        Ready to predict
+                    </div>
+
+                    <div class="placeholder-text">
+
+                        Fill in the student information<br>
+
+                        and click predict.
+
+                    </div>
+
+                </div>
+
+
+                <!-- Result -->
+
+                <div
+                    id="result"
+                    style="display:none;"
+                >
+
+                    <div class="prediction-label">
+                        Predicted Mathematics Score
+                    </div>
+
+
+                    <div
+                        class="score-circle"
+                        id="scoreCircle"
+                    >
+
+                        <div class="score-inner">
+
+                            <div
+                                class="score-value"
+                                id="prediction"
+                            >
+                                0
+                            </div>
+
+                            <div class="score-outof">
+                                out of 100
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="performance"
+                        id="performance"
+                    >
+
+                        <strong id="performanceTitle">
+                            Good Performance
+                        </strong>
+
+                        <span id="performanceText">
+                            The predicted score indicates
+                            a solid academic performance.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Error -->
+
+                <div
+                    id="errorBox"
+                    style="display:none;"
+                    class="error"
+                >
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <div class="footer">
+
+        Student Performance Prediction System
+        • Machine Learning + FastAPI
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+// ============================================================
+// SCORE SLIDERS
+// ============================================================
+
+const readingSlider =
+    document.getElementById("reading_score");
+
+const writingSlider =
+    document.getElementById("writing_score");
+
+const readingValue =
+    document.getElementById("readingValue");
+
+const writingValue =
+    document.getElementById("writingValue");
+
+
+readingSlider.addEventListener(
+    "input",
+    function () {
+
+        readingValue.textContent =
+            this.value;
+
+    }
+);
+
+
+writingSlider.addEventListener(
+    "input",
+    function () {
+
+        writingValue.textContent =
+            this.value;
+
+    }
+);
+
+
+// ============================================================
+// ELEMENTS
+// ============================================================
+
+const form =
+    document.getElementById(
+        "predictionForm"
+    );
+
+const predictBtn =
+    document.getElementById(
+        "predictBtn"
+    );
+
+const resetBtn =
+    document.getElementById(
+        "resetBtn"
+    );
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+const placeholder =
+    document.getElementById(
+        "placeholder"
+    );
+
+const result =
+    document.getElementById(
+        "result"
+    );
+
+const prediction =
+    document.getElementById(
+        "prediction"
+    );
+
+const scoreCircle =
+    document.getElementById(
+        "scoreCircle"
+    );
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+
+// ============================================================
+// PREDICTION
+// ============================================================
+
+form.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        // Hide old result
+
+        result.style.display =
+            "none";
+
+        placeholder.style.display =
+            "none";
+
+        errorBox.style.display =
+            "none";
+
+
+        // Loading
+
+        loading.style.display =
+            "flex";
+
+        predictBtn.disabled =
+            true;
+
+
+        // Prepare data
+
+        const data = {
+
+            gender:
+                document.getElementById(
+                    "gender"
+                ).value,
+
+            race_ethnicity:
+                document.getElementById(
+                    "race_ethnicity"
+                ).value,
+
+            parental_level_of_education:
+                document.getElementById(
+                    "parental_level_of_education"
+                ).value,
+
+            lunch:
+                document.getElementById(
+                    "lunch"
+                ).value,
+
+            test_preparation_course:
+                document.getElementById(
+                    "test_preparation_course"
+                ).value,
+
+            reading_score:
+                Number(
+                    readingSlider.value
+                ),
+
+            writing_score:
+                Number(
+                    writingSlider.value
+                )
+
+        };
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "/predict",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(data)
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Prediction request failed."
+                );
+
+            }
+
+
+            const resultData =
+                await response.json();
+
+
+            const score =
+                Number(
+                    resultData.predicted_math_score
+                );
+
+
+            // Display result
+
+            result.style.display =
+                "block";
+
+
+            // Animate score
+
+            animateScore(
+                score
+            );
+
+
+            // Update circle
+
+            const degrees =
+                score * 3.6;
+
+
+            scoreCircle.style.background =
+                `conic-gradient(
+                    #818cf8 0deg,
+                    #a855f7 ${degrees}deg,
+                    #1f2937 ${degrees}deg,
+                    #1f2937 360deg
+                )`;
+
+
+            // Performance message
+
+            updatePerformance(
+                score
+            );
+
+
+        } catch (error) {
+
+
+            placeholder.style.display =
+                "block";
+
+
+            errorBox.style.display =
+                "block";
+
+
+            errorBox.textContent =
+                "⚠️ " +
+                error.message +
+                " Please make sure the FastAPI server is running.";
+
+
+        } finally {
+
+
+            loading.style.display =
+                "none";
+
+
+            predictBtn.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// SCORE ANIMATION
+// ============================================================
+
+function animateScore(score) {
+
+    let current = 0;
+
+    const duration = 900;
+
+    const startTime =
+        performance.now();
+
+
+    function update(time) {
+
+        const elapsed =
+            time - startTime;
+
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
+            );
+
+
+        // Smooth animation
+
+        const eased =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
+
+
+        current =
+            score * eased;
+
+
+        prediction.textContent =
+            current.toFixed(1);
+
+
+        if (progress < 1) {
+
+            requestAnimationFrame(
+                update
+            );
+
+        } else {
+
+            prediction.textContent =
+                score.toFixed(2);
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        update
+    );
+
+}
+
+
+// ============================================================
+// PERFORMANCE MESSAGE
+// ============================================================
+
+function updatePerformance(score) {
+
+    const title =
+        document.getElementById(
+            "performanceTitle"
+        );
+
+    const text =
+        document.getElementById(
+            "performanceText"
+        );
+
+
+    if (score >= 90) {
+
+        title.textContent =
+            "🌟 Excellent Performance";
+
+        text.textContent =
+            "The predicted score indicates excellent academic performance.";
+
+    }
+
+    else if (score >= 80) {
+
+        title.textContent =
+            "👏 Very Good Performance";
+
+        text.textContent =
+            "The predicted score indicates very strong academic performance.";
+
+    }
+
+    else if (score >= 70) {
+
+        title.textContent =
+            "👍 Good Performance";
+
+        text.textContent =
+            "The predicted score indicates a good level of academic performance.";
+
+    }
+
+    else if (score >= 60) {
+
+        title.textContent =
+            "📚 Average Performance";
+
+        text.textContent =
+            "There is room for improvement in the predicted mathematics performance.";
+
+    }
+
+    else if (score >= 50) {
+
+        title.textContent =
+            "💪 Needs Improvement";
+
+        text.textContent =
+            "Additional preparation and practice may help improve the mathematics score.";
+
+    }
+
+    else {
+
+        title.textContent =
+            "📖 Needs More Support";
+
+        text.textContent =
+            "The predicted score suggests that additional academic support may be beneficial.";
+
+    }
+
+}
+
+
+// ============================================================
+// RESET
+// ============================================================
+
+resetBtn.addEventListener(
+    "click",
+    function () {
+
+        form.reset();
+
+
+        readingSlider.value =
+            70;
+
+        writingSlider.value =
+            70;
+
+
+        readingValue.textContent =
+            "70";
+
+        writingValue.textContent =
+            "70";
+
+
+        placeholder.style.display =
+            "block";
+
+        result.style.display =
+            "none";
+
+        errorBox.style.display =
+            "none";
+
+
+        scoreCircle.style.background =
+            `conic-gradient(
+                #818cf8 0deg,
+                #a855f7 0deg,
+                #1f2937 0deg
+            )`;
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
